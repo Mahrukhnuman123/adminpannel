@@ -9,10 +9,11 @@ class AddStudentPage extends StatefulWidget {
 
 class _AddStudentPageState extends State<AddStudentPage> {
   TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController roleController = TextEditingController();
   TextEditingController departmentController = TextEditingController();
+  TextEditingController idcontroller = TextEditingController();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -21,17 +22,18 @@ class _AddStudentPageState extends State<AddStudentPage> {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
-        password: passwordController.text.trim(),
+        password: passwordcontroller.text.trim(),
       );
       User? user = userCredential.user;
 
       if (user != null) {
-        await _firestore.collection('users').doc(user.uid).set({
-          'name': nameController.text.trim(),
-          'email': emailController.text.trim(),
+        await _firestore.collection('Students').doc(user.uid).set({
+          'Name': nameController.text.trim(),
+          'Email': emailController.text.trim(),
           'role': roleController.text.trim(),
-          'password':passwordController.text.trim(),
+          'Password':passwordcontroller.text.trim(),
           'Department':departmentController.text.trim(),
+          'User Id':idcontroller.text.trim(),
 
           // Never store passwords in plaintext in the database
         });
@@ -109,7 +111,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   ),
                   SizedBox(height: 20),
                   TextField(
-                    controller: passwordController,
+                    controller: passwordcontroller,
                     decoration: InputDecoration(
                       hintText: 'Password',
                       border: OutlineInputBorder(),
@@ -120,6 +122,14 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     controller: departmentController,
                     decoration: InputDecoration(
                       hintText: 'Department',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 35),
+                  TextField(
+                    controller: idcontroller,
+                    decoration: InputDecoration(
+                      hintText: 'User Id',
                       border: OutlineInputBorder(),
                     ),
                   ),
